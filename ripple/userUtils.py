@@ -503,6 +503,43 @@ def updateStatsRx(userID, __score):
 		# Update pp
 		updatePPRelax(userID, __score.gameMode)
 
+def updateStatsAp(userID, __score):
+	"""
+	Update stats (playcount, total score, ranked score, level bla bla)
+	with data relative to a score object
+
+	:param userID:
+	:param __score: score object
+	"""
+
+	# Make sure the user exists
+	if not exists(userID):
+		log.warning("User {} doesn't exist.".format(userID))
+		return
+
+	# Get gamemode for db
+	mode = scoreUtils.readableGameMode(__score.gameMode)
+
+	# Update total score and playcount
+	glob.db.execute(
+		"UPDATE users_stats SET total_score_{m}=total_score_{m}+%s, playcount_{m}=playcount_{m}+1 WHERE id = %s LIMIT 1".format(
+			m=mode), [__score.score, userID])
+
+	# Calculate new level and update it
+	updateLevel(userID, __score.gameMode)
+
+	# Update level, accuracy and ranked score only if we have passed the song
+	if __score.passed:
+		# Update ranked score
+		glob.db.execute(
+			"UPDATE users_stats SET ranked_score_{m}=ranked_score_{m}+%s WHERE id = %s LIMIT 1".format(m=mode),
+			[__score.rankedScoreIncrease, userID])
+
+		# Update accuracy
+		updateAccuracy(userID, __score.gameMode)
+
+		# Update pp
+		updatePPAuto(userID, __score.gameMode)
 def updateLatestActivity(userID):
 	"""
 	Update userID's latest activity to current UNIX time
