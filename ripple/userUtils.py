@@ -75,7 +75,7 @@ def getUserStatsAp(userID, gameMode):
 						avg_accuracy_{gm} AS accuracy,
 						playcount_{gm} AS playcount,
 						total_score_{gm} AS totalScore,
-						pp_{gm}_rx AS pp
+						pp_{gm}_auto AS pp
 						FROM users_stats WHERE id = %s LIMIT 1""".format(gm=modeForDB), [userID])
 
 	# Get game rank
