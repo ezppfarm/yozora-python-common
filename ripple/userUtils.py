@@ -1,5 +1,6 @@
 import time
 from _mysql import ProgrammingError
+import requests
 
 from common import generalUtils
 from common.constants import gameModes
