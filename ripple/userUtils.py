@@ -9,6 +9,22 @@ from common.ripple import passwordUtils, scoreUtils
 from objects import glob
 
 
+def getBeatmapTime(beatmapID):
+	p = 0
+	r = requests.get("http://cg.mxr.lol/api/b/{}".format(beatmapID)).text
+	if r != "null\n":
+		p = json.loads(r)['TotalLength']
+
+	return p
+
+def incrementPlaytime(userID, gameMode=0, length=0):
+	modeForDB = gameModes.getGameModeForDB(gameMode)
+	result = glob.db.fetch("SELECT playtime_{gm} as playtime FROM users_stats WHERE id = %s".format(gm=modeForDB), [userID])
+	if result is not None:
+		glob.db.execute("UPDATE users_stats SET playtime_{gm} = %s WHERE id = %s".format(gm=modeForDB), [(int(result['playtime'])+int(length)), userID])
+	else:
+		print("something went wrong...")
+
 def getUserStats(userID, gameMode):
 	"""
 	Get all user stats relative to `gameMode`
