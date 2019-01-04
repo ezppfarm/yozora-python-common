@@ -10,7 +10,10 @@ from common.log import logUtils as log
 from common.ripple import passwordUtils, scoreUtils
 from objects import glob
 
-
+def logUserLog(log,fileMd5,userID, gameMode):
+	glob.db.execute("INSERT INTO users_logs (user, log, time, game_mode, beatmap_md5) VALUES (%s, %s, %s, %s, %s)",[userID, log, int(time.time()), gameMode, fileMd5])
+	return True
+	
 def getBeatmapTime(beatmapID):
 	p = 0
 	r = requests.get("http://cg.mxr.lol/api/b/{}".format(beatmapID)).text
