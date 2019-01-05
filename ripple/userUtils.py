@@ -10,9 +10,12 @@ from common.log import logUtils as log
 from common.ripple import passwordUtils, scoreUtils
 from objects import glob
 
-def logUserLog(log,fileMd5,userID, gameMode):
-	glob.db.execute("INSERT INTO users_logs (user, log, time, game_mode, beatmap_md5) VALUES (%s, %s, %s, %s, %s)",[userID, log, int(time.time()), gameMode, fileMd5])
+def logUserLog(log,fileMd5,userID, gameMode, rank):
+	glob.db.execute("INSERT INTO users_logs (user, log, time, game_mode, rank, beatmap_md5) VALUES (%s, %s, %s, %s, %s, %s)",[userID, log, int(time.time()), gameMode, rank, fileMd5])
 	return True
+def logUserLogX(log,fileMd5,userID, gameMode):
+	glob.db.execute("INSERT INTO users_logs (user, log, time, game_mode, beatmap_md5) VALUES (%s, %s, %s, %s, %s)",[userID, log, int(time.time()), gameMode, fileMd5])
+	return True	
 	
 def getBeatmapTime(beatmapID):
 	p = 0
