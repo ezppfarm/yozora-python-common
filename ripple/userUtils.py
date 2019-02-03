@@ -371,6 +371,81 @@ def calculateAccuracy(userID, gameMode):
 			v = 0
 	return v
 
+
+def calculateAccuracyRX(userID, gameMode):
+	"""
+	Calculate accuracy value for userID relative to gameMode
+
+	:param userID: user id
+	:param gameMode: game mode number
+	:return: new accuracy
+	"""
+	# Select what to sort by
+	if gameMode == 0:
+		sortby = "pp"
+	else:
+		sortby = "accuracy"
+	# Get best accuracy scores
+	bestAccScores = glob.db.fetchAll(
+		"SELECT accuracy FROM scores_relax WHERE userid = %s AND play_mode = %s AND completed = 3 ORDER BY " + sortby + " DESC LIMIT 500",
+		[userID, gameMode])
+
+	v = 0
+	if bestAccScores is not None:
+		# Calculate weighted accuracy
+		totalAcc = 0
+		divideTotal = 0
+		k = 0
+		for i in bestAccScores:
+			add = int((0.95 ** k) * 100)
+			totalAcc += i["accuracy"] * add
+			divideTotal += add
+			k += 1
+		# echo "$add - $totalacc - $divideTotal\n"
+		if divideTotal != 0:
+			v = totalAcc / divideTotal
+		else:
+			v = 0
+	return v
+	
+
+def calculateAccuracyAP(userID, gameMode):
+	"""
+	Calculate accuracy value for userID relative to gameMode
+
+	:param userID: user id
+	:param gameMode: game mode number
+	:return: new accuracy
+	"""
+	# Select what to sort by
+	if gameMode == 0:
+		sortby = "pp"
+	else:
+		sortby = "accuracy"
+	# Get best accuracy scores
+	bestAccScores = glob.db.fetchAll(
+		"SELECT accuracy FROM scores_auto WHERE userid = %s AND play_mode = %s AND completed = 3 ORDER BY " + sortby + " DESC LIMIT 500",
+		[userID, gameMode])
+
+	v = 0
+	if bestAccScores is not None:
+		# Calculate weighted accuracy
+		totalAcc = 0
+		divideTotal = 0
+		k = 0
+		for i in bestAccScores:
+			add = int((0.95 ** k) * 100)
+			totalAcc += i["accuracy"] * add
+			divideTotal += add
+			k += 1
+		# echo "$add - $totalacc - $divideTotal\n"
+		if divideTotal != 0:
+			v = totalAcc / divideTotal
+		else:
+			v = 0
+	return v	
+
+
 def calculatePP(userID, gameMode):
 	"""
 	Calculate userID's total PP for gameMode
@@ -464,7 +539,7 @@ def updateAccuracyRX(userID, gameMode):
 	:param gameMode: gameMode number
 	:return:
 	"""
-	newAcc = calculateAccuracy(userID, gameMode)
+	newAcc = calculateAccuracyRX(userID, gameMode)
 	mode = scoreUtils.readableGameMode(gameMode)
 	glob.db.execute("UPDATE users_stats SET avg_accuracy_{m}_rx = %s WHERE id = %s LIMIT 1".format(m=mode),
 					[newAcc, userID])	
@@ -477,7 +552,7 @@ def updateAccuracyAP(userID, gameMode):
 	:param gameMode: gameMode number
 	:return:
 	"""
-	newAcc = calculateAccuracy(userID, gameMode)
+	newAcc = calculateAccuracyAP(userID, gameMode)
 	mode = scoreUtils.readableGameMode(gameMode)
 	glob.db.execute("UPDATE users_stats SET avg_accuracy_{m}_ap = %s WHERE id = %s LIMIT 1".format(m=mode),
 					[newAcc, userID])												
@@ -623,6 +698,7 @@ def updateStatsAp(userID, __score):
 
 	# Get gamemode for db
 	mode = scoreUtils.readableGameMode(__score.gameMode)
+
 
 	# Update total score and playcount
 	glob.db.execute(
