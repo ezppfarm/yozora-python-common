@@ -25,7 +25,7 @@ def getBeatmapTime(beatmapID):
 
 	return p
 
-def incrementPlaytime(userID, gameMode=0, length=0, mode):
+def incrementPlaytime(userID, gameMode=0, length=0):
 	modeForDB = gameModes.getGameModeForDB(gameMode)
 	result = glob.db.fetch("SELECT playtime_{gm} as playtime FROM users_stats WHERE id = %s".format(gm=modeForDB), [userID])
 	if result is not None:
@@ -791,6 +791,7 @@ def incrementReplaysWatched(userID, gameMode):
 	glob.db.execute(
 		"UPDATE users_stats SET replays_watched_{mode}=replays_watched_{mode}+1 WHERE id = %s LIMIT 1".format(
 			mode=mode), [userID])
+
 
 def getAqn(userID):
 	"""
