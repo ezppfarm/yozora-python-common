@@ -1016,6 +1016,30 @@ def getPlaycount(userID, gameMode):
 	modeForDB = gameModes.getGameModeForDB(gameMode)
 	return glob.db.fetch("SELECT playcount_"+modeForDB+" FROM users_stats WHERE id = %s LIMIT 1", [userID])["playcount_"+modeForDB]
 
+def getPlaycountRX(userID, gameMode):
+	"""
+	Get `userID`'s playcount relative to `gameMode`
+
+	:param userID: user id
+	:param gameMode: game mode number
+	:return: playcount
+	"""
+	modeForDB = gameModes.getGameModeForDB(gameMode)
+	return glob.db.fetch("SELECT playcount_"+modeForDB+"_rx FROM users_stats WHERE id = %s LIMIT 1", [userID])["playcount_"+modeForDB]	
+
+
+def getPlaycountAP(userID, gameMode):
+	"""
+	Get `userID`'s playcount relative to `gameMode`
+
+	:param userID: user id
+	:param gameMode: game mode number
+	:return: playcount
+	"""
+	modeForDB = gameModes.getGameModeForDB(gameMode)
+	return glob.db.fetch("SELECT playcount_"+modeForDB+"_ap FROM users_stats WHERE id = %s LIMIT 1", [userID])["playcount_"+modeForDB]	
+
+
 def getFriendList(userID):
 	"""
 	Get `userID`'s friendlist
