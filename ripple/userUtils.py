@@ -85,7 +85,7 @@ def getUserStatsRx(userID, gameMode):
 	:return: dictionary with result
 	"""
 	modeForDB = gameModes.getGameModeForDB(gameMode)
-	if ModeForDB == 3:
+	if gameMode == MANIA:
 
 		# Get stats
 		stats = glob.db.fetch("""SELECT
@@ -122,7 +122,7 @@ def getUserStatsAp(userID, gameMode):
 	:return: dictionary with result
 	"""
 	modeForDB = gameModes.getGameModeForDB(gameMode)
-	if ModeForDB == 3:
+	if gameMode == MANIA:
 
 		# Get stats
 		stats = glob.db.fetch("""SELECT
