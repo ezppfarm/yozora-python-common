@@ -744,7 +744,7 @@ def updateStatsAp(userID, __score):
 
 	# Update total score and playcount
 	glob.db.execute(
-		"UPDATE users_stats SET total_score_{m}_ap=total_score_{m}_a-+%s, playcount_{m}_ap=playcount_{m}_ap+1 WHERE id = %s LIMIT 1".format(
+		"UPDATE users_stats SET total_score_{m}_ap=total_score_{m}_ap-+%s, playcount_{m}_ap=playcount_{m}_ap+1 WHERE id = %s LIMIT 1".format(
 			m=mode), [__score.score, userID])
 
 	# Calculate new level and update it
@@ -754,7 +754,7 @@ def updateStatsAp(userID, __score):
 	if __score.passed:
 		# Update ranked score
 		glob.db.execute(
-			"UPDATE users_stats SET ranked_score_{m}=ranked_score_{m}+%s WHERE id = %s LIMIT 1".format(m=mode),
+			"UPDATE users_stats SET ranked_score_{m}_ap=ranked_score_{m}_ap+%s WHERE id = %s LIMIT 1".format(m=mode),
 			[__score.rankedScoreIncrease, userID])
 
 		# Update accuracy
