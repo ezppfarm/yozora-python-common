@@ -85,8 +85,9 @@ def getUserStatsRx(userID, gameMode):
 	:return: dictionary with result
 	"""
 	modeForDB = gameModes.getGameModeForDB(gameMode)
+
 	# Get stats
-		stats = glob.db.fetch("""SELECT
+	stats = glob.db.fetch("""SELECT
 							ranked_score_{gm}_rx AS rankedScore,
 							avg_accuracy_{gm}_rx AS accuracy,
 							playcount_{gm}_rx AS playcount,
