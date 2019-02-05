@@ -85,19 +85,6 @@ def getUserStatsRx(userID, gameMode):
 	:return: dictionary with result
 	"""
 	modeForDB = gameModes.getGameModeForDB(gameMode)
-	if gameMode == 3:
-
-		# Get stats
-		stats = glob.db.fetch("""SELECT
-							ranked_score_{gm} AS rankedScore,
-							avg_accuracy_{gm} AS accuracy,
-							playcount_{gm} AS playcount,
-							total_score_{gm} AS totalScore,
-							pp_{gm} AS pp
-							FROM users_stats WHERE id = %s LIMIT 1""".format(gm=modeForDB), [userID])
-
-		# Get game rank
-	else:
 	# Get stats
 		stats = glob.db.fetch("""SELECT
 							ranked_score_{gm}_rx AS rankedScore,
@@ -122,21 +109,8 @@ def getUserStatsAp(userID, gameMode):
 	:return: dictionary with result
 	"""
 	modeForDB = gameModes.getGameModeForDB(gameMode)
-	if gameMode == 3:
-
-		# Get stats
-		stats = glob.db.fetch("""SELECT
-							ranked_score_{gm} AS rankedScore,
-							avg_accuracy_{gm} AS accuracy,
-							playcount_{gm} AS playcount,
-							total_score_{gm} AS totalScore,
-							pp_{gm} AS pp
-							FROM users_stats WHERE id = %s LIMIT 1""".format(gm=modeForDB), [userID])
-
-		# Get game rank
-	else:
 	# Get stats
-		stats = glob.db.fetch("""SELECT
+	stats = glob.db.fetch("""SELECT
 							ranked_score_{gm}_ap AS rankedScore,
 							avg_accuracy_{gm}_ap AS accuracy,
 							playcount_{gm}_ap AS playcount,
