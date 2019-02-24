@@ -19,7 +19,7 @@ def logUserLogX(log,fileMd5,userID, gameMode):
 	
 def getBeatmapTime(beatmapID):
 	p = 0
-	r = requests.get("http://cg.mxr.lol/api/b/{}".format(beatmapID)).text
+	r = requests.get("http://storage.ripple.moe/api/b/{}".format(beatmapID)).text
 	if r != "null\n":
 		p = json.loads(r)['TotalLength']
 
