@@ -156,9 +156,8 @@ def getMaxCombo(userID, gameMode):
 	:param gameMode: game mode number
 	:return: dictionary with result
 	"""
-	modeForDB = gameModes.getGameModeForDB(gameMode)
 	# Get stats
-	maxcombo = glob.db.fetch("""SELECT max_combo FROM scores WHERE userid = ? AND play_mode = {gm} ORDER BY max_combo DESC LIMIT 1""".format([userID], gm=modeForDB))
+	maxcombo = glob.db.fetch("""SELECT max_combo FROM scores WHERE userid = ? AND play_mode = ? ORDER BY max_combo DESC LIMIT 1""".format([userID], gameMode))
 
 	# Return stats + game rank
 	return maxcombo
